@@ -1330,8 +1330,10 @@
 			/////////////////////////////////
 			this.process_damage = function (pen, damage, h_v) {
 				
-			
+				this.parent.fleet.damage_report ["hits_taken"] += 1; 
+				
 				if ((h_v == 'h') && (pen >= this.armor))  {
+					this.parent.fleet.damage_report ["armor_penetrated"] += 1; 
 					$scope.turn_message_list.push ( [ this.parent.name + "  turret  damaged",  "{'font-size':'10px', 'color':'grey' }"      ] )
 					this.current_hitpoints -= damage; 
 					var cm = this.current_hitpoints / this.max_hitpoints 
@@ -1383,6 +1385,8 @@
 				
 				var relevant_armor = this.parent.data.armor [hit_side]
 				
+				this.parent.fleet.damage_report ["hits_taken"] += 1; 
+				
 				
 				if (h_v == 'h') {
 					var pen_90 = pen 
@@ -1395,6 +1399,7 @@
 				
 			
 				if (pen >= relevant_armor) {
+					this.parent.fleet.damage_report ["armor_penetrated"] += 1; 
 					$scope.turn_message_list.push ([ "main_armor penetrated"    ,"{'font-size':'10px', 'color':'orange' }"      ]) 
 					
 					var n = Math.random ()
@@ -1723,6 +1728,17 @@
 			}
 			this.status = 'ok'
 			this.shots_fired_this_turn = 0 
+			this.damage_report_zero = {
+				"hits_taken" : 0, 
+				"armor_penetrated" : 0, 
+				"damage_taken": 0, 
+				"main_destroyed": 0, 
+				"secondaries_destroyed": 0, 
+				"battleships_destroyed": 0 
+			}
+			
+			
+			console.log (this.damage_report) 
 			
 			//////////////////////////
 			/*
@@ -2052,6 +2068,8 @@
 			///////////////////////////
 			this.fleet_main = function (active) {
 				this.shots_fired_this_turn = 0 
+				console.log (this.damage_report); 
+				this.damage_report = jQuery.extend  (true, {}, this.damage_report_zero)
 				if (this.core_ship_list.equals ([])) {
 					this.status = 'dead'
 					this.position = [-1000,-1000]
@@ -2113,7 +2131,9 @@
 			//////////////////////////////////		
 			this.fleet_main_4 = function () {
 				this.do_graphics () 
-				
+				var display_hits_field = $("<div> </div>")  
+				$(display_hits_field).html ("test").css ("left", this.position [0] +  "px").css ("top", this.position [1] + "px").css("height", "30px") 
+				$("#middle_column").append (display_hits_field)
 			
 			}
 			//////////////////////////////////
