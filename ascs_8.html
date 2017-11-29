@@ -440,6 +440,21 @@
 						background-size:100% 100%;
 					}
 					
+					.orange_test {
+						position:absolute;
+						font-size:10px;						
+						margin-left:-2px;
+						margin-top:-2px;
+						height:40px;
+						width:140px;
+						// background:url("orange_button.png");
+						background-size:100% 100%;
+						border: 1px ridge orange; 
+						background-color:white;
+					}
+					
+					
+					
 					.small_yellow_ring {
 						position:absolute; 
 						margin-left:-5px;
@@ -2132,7 +2147,7 @@
 			this.fleet_main_4 = function () {
 				this.do_graphics () 
 				var display_hits_field = $("<div> </div>")  
-				$(display_hits_field).html ("test").css ("left", this.position [0] +  "px").css ("top", this.position [1] + "px").css("height", "30px") 
+				$(display_hits_field).html ("pen: " +this.damage_report ["armor_penetrated"]).css ("left", this.position [0] +  "px").css ("top", this.position [1] + "px").css("height", "30px").addClass ("orange_test").addClass ("graphic").addClass ("result_display")  
 				$("#middle_column").append (display_hits_field)
 			
 			}
