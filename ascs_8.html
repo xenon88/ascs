@@ -56,17 +56,16 @@
 			right:0px;
 			top:0px;
 			box-sizing:border-box;
-			background-color:green;
-			border-width:0px;
+			background-image:url("cloud_metal.png");
+			background-size:50% 50%;
+			///// background:linear-gradient(to bottom right, rgb(100,100,255),white,rgb(100,100,255),white,rgb(100,100,255),white,rgb(100,100,255),white,rgb(100,100,255),white,rgb(100,100,255));
+			
+			
 			box-shadow:
 				inset 0 0 0 1px #000,
-				inset 0 0 0 2px #ddd,
-				inset 0 0 0 10px #88f,
-				inset 0 0 0 11px #ddd,
-				inset 0 0 0 12px #40434a;
-				
+				inset 0 0 0 2px #ddd;
 			border-radius:10px;
-			padding:12px;
+			padding:10px;
 		
 		}
 		
@@ -76,6 +75,10 @@
 			position:relative;
 			display:flex;
 			flex-direction:column;
+			padding:2px;
+			box-shadow:
+				inset 0 0 0 1px #ddd,
+				inset 0 0 0 2px #40434a;
 		
 		}
 		
@@ -1891,6 +1894,22 @@
 			/////////////////////////
 			
 			
+			this.update_target_distance = function () {
+			
+				//		Get target course
+				var a = this.current_course
+				
+				var ps = this.position 
+				var pe = this.target_fleet.position 
+				
+				console.log ("test 3000   " + this.position + "       " + this.target_fleet.position) 
+				
+				var rel_pos = vsub (pe, ps) 
+				this.target_distance = vector_length (rel_pos)  // target distance 
+				this.target_distance = (xround (this.target_distance, 2)); 
+				console.log (this.target_distance)
+			}
+			
 			///////////////////////////////////////
 			this.update_top_speed = function () {
 				
@@ -2176,6 +2195,7 @@
 				}
 				
 				this.update_target_angle ()
+				this.update_target_distance () 
 				this.update_ships_2 ()
 			}
 			///////////////////////////
@@ -2974,48 +2994,31 @@
 						</div>
 						<div class="black_line_h"> </div>
 						<div id="player_ship_list"> 
-							<div class = "ship_display" ng-repeat="ship in active_player_fleet.core_ship_list" > 
+							<div class = "ship_display" ng-repeat="fleet in player_fleet_list">
 								<div class="name_type">
-									<div class="name"> {{ship.name}}</div>
-									<div class="name"> {{ship.fleet.element}} </div>
-									<div class="type"> {{ship.type}} </div>
+									<div class="name"> {{fleet.name}}</div>
 								</div>
-								<div class="hp_guns">
-									
-									
-									
-									
-									
-								</div>
-								<div class="hp_guns" style="padding-left:5px;"> Hitpoints: &nbsp  {{ship.hitpoints}}  </div>
-								<div class="hp_guns"> 
-									<div class="hp" ng-repeat="enemy_ship in ship.enemy_ship_list" > {{enemy_ship.name}}  </div>
-								</div>
-								<div class="hp" style="width:100%;height:20px;"> Engine Hp:  {{ship.current_engine_hitpoints}} </div>
-								<div class="hp" style="width:100%;height:20px;"> Target:  {{ship.target.name}} </div>
-								<div class="hp" style="width:100%;height:20px;"> Target Distance:  {{ship.target_distance}} </div>
-								<div class="hp" style="width:100%;height:20px;"> Shots fired:  {{ship.last_turn_shots_fired}} </div>
-								<div class="hp" style="width:100%;height:20px;"> Hits:  {{ship.last_turn_hits}} </div>
+								<div class="hp" style="width:100%;height:20px;"> target angle: {{  fleet.target_angle_degree}} </div>
+								<div class="hp" style="width:100%;height:20px;"> hit angle: {{  fleet.target_hit_angle}} </div>
+								<div class="hp" style="width:100%;height:20px;"> Distance:  {{fleet.target_distance}} </div>
 								
-								
-								<div class="hp" style="width:100%;height:20px;"> target angle: {{  ship.fleet.target_angle_degree}} </div>
-								<div class="hp" style="width:100%;height:20px;"> hit angle: {{  ship.fleet.target_hit_angle}} </div>
 								<div class="arc" style="width:100%;height:20px;"> coax arc:
-									<div class="green_light"  ng-if="ship.fleet.turrets_in_arc.cx" > </div>
-									<div class="red_light"  ng-if="!ship.fleet.turrets_in_arc.cx" > </div>
+									<div class="green_light"  ng-if="fleet.turrets_in_arc.cx" > </div>
+									<div class="red_light"  ng-if="!fleet.turrets_in_arc.cx" > </div>
 								</div>
 								<div class="arc" style="width:100%;height:20px;"> fore arc:
-									<div class="green_light"  ng-if="ship.fleet.turrets_in_arc.f" > </div>
-									<div class="red_light"  ng-if="!ship.fleet.turrets_in_arc.f" > </div>
+									<div class="green_light"  ng-if="fleet.turrets_in_arc.f" > </div>
+									<div class="red_light"  ng-if="!fleet.turrets_in_arc.f" > </div>
 								</div>
 								<div class="arc" style="width:100%;height:20px;"> aft arc: 
-									<div class="green_light"  ng-if="ship.fleet.turrets_in_arc.a" > </div>
-									<div class="red_light"  ng-if="!ship.fleet.turrets_in_arc.a" > </div>
+									<div class="green_light"  ng-if="fleet.turrets_in_arc.a" > </div>
+									<div class="red_light"  ng-if="!fleet.turrets_in_arc.a" > </div>
 								</div>
-								<div class="hp" style="width:100%;height:20px;"> br right arc: </div>
-								<div class="hp" style="width:100%;height:20px;"> br left arc: </div>
+								<div class="hp" style="width:100%;height:20px;"> br right arc: {{fleet.turrets_in_arc.br}} </div>
+								<div class="hp" style="width:100%;height:20px;"> br left arc: {{fleet.turrets_in_arc.bl}} </div>
+							
+							
 							</div>
-						
 						</div>
 
 					</div>
