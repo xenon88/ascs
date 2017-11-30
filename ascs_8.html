@@ -1360,17 +1360,17 @@
 						
 						var pen = 2 * Math.max  (0, 2 * this.cal - (distance / 1000)) 
 						var target_components = target.elements
+						///////////////////////////  remove components whose damage state is "j" (Junk) 
+						for (let item of target_components.slice()) 
+						{
+							if (item.status == "j") 
+							{
+								target_components.remove (item) 
+							}
+						}
 					
 						
-						
-						
-						
-						
-						
-						
 						assign_hit_range (target_components)
-						
-						
 						
 						
 						var n = random_n (99) 
@@ -1381,8 +1381,6 @@
 							}
 						
 						}
-						
-						
 						
 						
 						hits += 1; 
@@ -1411,8 +1409,22 @@
 					this.current_hitpoints -= damage; 
 					var cm = this.current_hitpoints / this.max_hitpoints 
 					if (cm < 0.5 ) { this.status ="hd"}
-					if (cm < 0 ) {this.status = "j"}
-					if (cm <= -10) {this.status = "g"}
+					if (this.current_hitpoints <= 0 ) 
+					{
+						this.status = "j"		// "j"   stands for "JUNK" 
+						// alert (this.data.category) 
+						switch (this.data.category) {
+							case "s": 
+								this.parent.fleet.damage_report ["secondaries_destroyed"] += 1 
+								break; 
+							case "m": 
+								this.parent.fleet.damage_report ["main_destroyed"] += 1 
+								break; 
+						}
+						
+						
+					}
+					// if (cm <= -10) {this.status = "g"}
 				}
 				
 			}
@@ -1472,7 +1484,8 @@
 				
 			
 				if (pen >= relevant_armor) {
-					this.parent.fleet.damage_report ["armor_penetrated"] += 1; 
+					this.parent.fleet.damage_report ["armor_penetrated"] += 1;
+					this.parent.fleet.damage_report ["damage_taken"] += damage; 
 					$scope.turn_message_list.push ([ "main_armor penetrated"    ,"{'font-size':'10px', 'color':'orange' }"      ]) 
 					
 					var n = Math.random ()
@@ -1554,12 +1567,6 @@
 			}
 			
 			
-			
-			
-			
-			
-			
-			
 			// 
 			
 			
@@ -1601,6 +1608,13 @@
 			////////////////////////////////////////   ship - die 
 			this.die = function () {
 				this.status = "dead"
+				switch (this.data.category) {
+					case "BB": 
+						this.fleet.damage_report ["battleships_destroyed"] += 1
+						break;
+				}
+				
+				
 				this.ship_explosion () 
 				
 				this.fleet.remove_ship (this)

@@ -3,6 +3,7 @@ var available_ship_list = []
 //////////////////////////////
 
 var CONCORDIA_TEST = {
+	"category": "BB", 
 	"name":"Concordia_Test", 
 	"ship_type":"core",
 	"hitpoints":1000,
@@ -42,6 +43,7 @@ available_ship_list.push (CONCORDIA_TEST)
 //////////////////////////////
 
 var CONCORDIA = {
+	"category": "BB", 
 	"name":"Concordia", 
 	"ship_type":"core",
 	"hitpoints":1000,
@@ -195,6 +197,7 @@ available_ship_list.push (CONCORDIA)
 //////////////////////////////
 
 var FRALTHI = {
+	"category": "BB", 
 	"name":"Fralthi", 
 	"ship_type":"core",
 	"hitpoints":500,
@@ -338,6 +341,7 @@ available_ship_list.push (FRALTHI)
 //////////////////////////////////////////
 
 var HORNET = {
+	"category": "DD", 
 	"name":"Hornet", 
 	"ship_type":"escort",
 	"hitpoints":10,
