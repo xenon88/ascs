@@ -2770,6 +2770,9 @@
 	
 	
 	<script>
+		
+	
+	
 		$(document).ready ( function () {
 			$("*").css ("box-sizing", "border-box");
 			$("#design_frame").hide ()
@@ -2783,11 +2786,20 @@
 			$("#design_button").on ("click", function () {
 				$(".battle_design_frame").hide () 
 				$("#design_frame").show () 
-			
 			}  )
 			
 			
+			/////
+			$("body").on("keypress", function (e) {
+				var key = e.originalEvent.charCode; 
+				if (key == 32) {
+					$(".b17").remove ()
+				}
+				
+				
+			});
 			
+			/////
 			
 			
 		})
