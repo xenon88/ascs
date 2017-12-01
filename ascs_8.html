@@ -1312,39 +1312,41 @@
 			
 			
 			this.fire = function (distance,p,target) {
-			
 				
-			
+				//		check if the turret is still functional 
 				if (this.ok_the_round_before != true) {
 					// // $scope.turn_message_list.push ("turret cannot fire :: DAMAGED ")
 					return false 
 				}
 				
+				//		check if the target is in turret arc 
 				if (this.parent.fleet.turrets_in_arc [this.arc] == false) {
-					
 					return false
 				}
 				
-				
-				
-				
-			
 				var hits = 0
 				
 				
 				var shots_fired = Math.floor (this.gun_number * this.rof)
 				this.parent.fleet.shots_fired_this_turn += 1; 
 				
-				
-				
 				var damage = this.damage
 				
 				
-				
-				
-				
+				///// create the shots 
 				for (var i = 0; i < shots_fired; i++) {
+				
+					var shot = {}
+					shot.mothership = this.parent 
+					shot.caliber = this.cal 
+					shot.distance = distance 
+					shot.probability = p 
+					
+				
+				
 					dice = Math.random () 
+					shot.dice = dice 
+					
 					var p_mod = p 
 					
 					
@@ -1352,7 +1354,7 @@
 					
 					if ( p_mod > dice ) {
 						
-						dice = Math.random () 
+						// dice = Math.random () 
 						//		check vertical hit
 						
 						var h_v = 'h'
