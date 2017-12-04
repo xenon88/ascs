@@ -1372,23 +1372,23 @@
 					shot.pen.result = pen; 
 					shot.pen.mods.push ("Distance:  " + pen); 
 					
-					log_once (shot); 
+					
 					
 					
 					dice = Math.random () 
 					shot.dice = dice 
 					
-					var p_mod = p 
 					
 					
 					
 					
-					if ( p_mod > dice ) {
+					
+					if ( p > dice ) {
 						
 						// dice = Math.random () 
 						//		check vertical hit
 						
-						var h_v = 'h'
+						
 						
 						
 						
@@ -1409,8 +1409,8 @@
 						var n = random_n (99) 
 						for (let item of target_components) {
 							if ( item.hit_range.includes (n) ) {
-								$scope.turn_message_list.push ( [target.name + "  " + item.type +  "  hit " + h_v + "   " + pen, "{ }"])
-								item.process_damage (pen = pen, damage = damage, h_v = h_v, hit_angle = this.parent.fleet.target_hit_angle, hit_side = this.parent.fleet.target_hit_side)
+								$scope.turn_message_list.push ( [target.name + "  " + item.type +  "  hit " + pen, "{ }"])
+								item.process_damage (pen = pen, damage = damage, hit_angle = this.parent.fleet.target_hit_angle, hit_side = this.parent.fleet.target_hit_side, shot = shot)
 							}
 						
 						}
@@ -1432,11 +1432,11 @@
 			
 			
 			/////////////////////////////////
-			this.process_damage = function (pen, damage, h_v) {
+			this.process_damage = function (pen, damage, shot) {
 				
 				this.parent.fleet.damage_report ["hits_taken"] += 1; 
 				
-				if ((h_v == 'h') && (pen >= this.armor))  {
+				if (pen >= this.armor)  {
 					this.parent.fleet.damage_report ["armor_penetrated"] += 1; 
 					$scope.turn_message_list.push ( [ this.parent.name + "  turret  damaged",  "{'font-size':'10px', 'color':'grey' }"      ] )
 					this.current_hitpoints -= damage; 
@@ -1499,19 +1499,19 @@
 			
 			
 			
-			this.process_damage = function (pen, damage, h_v, hit_angle) {
+			this.process_damage = function (pen, damage, hit_angle, shot) {
 				
 				var relevant_armor = this.parent.data.armor [hit_side]
 				
 				this.parent.fleet.damage_report ["hits_taken"] += 1; 
 				
 				
-				if (h_v == 'h') {
+				
 					var pen_90 = pen 
 					var angle_factor = Math.max (hit_angle / 1.57, 0.5)
 					pen = xround (angle_factor * pen, 1) 
 					$scope.turn_message_list.push ([ pen_90 + "    " + pen           ,"{'font-size':'10px', 'color':'blue' }"      ]) 
-				}
+				
 			
 				 
 				
