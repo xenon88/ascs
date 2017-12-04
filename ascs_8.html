@@ -27,7 +27,6 @@
 	<script src="jquery-3.1.1.js"></script>
 	<script src="angular.min.js"> </script>
 	<script src="xfunctions.js"> </script>
-	<script src="guns.js"> </script>
 	<script src="ships.js"> </script>
 	<style>
 	
@@ -850,6 +849,11 @@
     }
 	///////////////////////////////////////////////////
 	
+	function log_once (stuff) {
+		console.log (stuff); 
+		log_once = undefined; 
+	}
+	
 	///////////////////////////////////////////////////
 	function xround (x,n) {
 		var factor = 10 ** n
@@ -1311,7 +1315,7 @@
 			
 			
 			
-			this.fire = function (distance,p,target) {
+			this.fire = function (distance,target) {
 				
 				//		check if the turret is still functional 
 				if (this.ok_the_round_before != true) {
@@ -1337,13 +1341,40 @@
 				for (var i = 0; i < shots_fired; i++) {
 				
 					var shot = {}
-					shot.mothership = this.parent 
+					shot.mothership = this.parent.name 
 					shot.caliber = this.cal 
 					shot.distance = distance 
-					shot.probability = p 
+					shot.p = {	// Probability 
+						"result" : 1, 
+						"mods" : []
+					}
 					
-				
-				
+					
+					var pen = 4 * this.cal 
+					
+					shot.pen = {
+						"result" : pen, 
+						"mods" : [
+							"start:  " + pen 
+						]
+					}
+					
+					// 			Distance to hit penalty and Distance penetration penalty 
+					pen = pen - (distance / 1000)
+					
+					var distance_to_hit_mod = 225 / ( this.cal ** 2)   
+					
+					p = 1 - (distance * distance_to_hit_mod / 30000 )
+					
+					shot.p.result = p; 
+					shot.p.mods.push ("Distance: " +p)
+					
+					shot.pen.result = pen; 
+					shot.pen.mods.push ("Distance:  " + pen); 
+					
+					log_once (shot); 
+					
+					
 					dice = Math.random () 
 					shot.dice = dice 
 					
@@ -1360,7 +1391,7 @@
 						var h_v = 'h'
 						
 						
-						var pen = 2 * Math.max  (0, 2 * this.cal - (distance / 1000)) 
+						
 						var target_components = target.elements
 						///////////////////////////  remove components whose damage state is "j" (Junk) 
 						for (let item of target_components.slice()) 
@@ -1718,15 +1749,17 @@
 				this.last_turn_hits = 0 
 				this.last_turn_shots_fired = 0 
 				
-				//		b)		get hit chance
+				//		b)		get target distance 
 				var distance = point_distance (this.fleet.position, this.target.fleet.position)
+				
+				// 		get display target_distance 
 				this.target_distance = Math.ceil ((distance) * 100 )
 				distance = Math.ceil (distance / 10) * 1000
-				var p = basic_hit_chance [distance] / 100
+				// var p = basic_hit_chance [distance] / 100
 				
 				
 				for (let item of this.turret_list) {
-					item.fire (distance = distance, p = p, target = this.target )
+					item.fire (distance = distance, target = this.target )
 				}
 				
 				
@@ -1918,12 +1951,12 @@
 				var ps = this.position 
 				var pe = this.target_fleet.position 
 				
-				console.log ("test 3000   " + this.position + "       " + this.target_fleet.position) 
+				 
 				
 				var rel_pos = vsub (pe, ps) 
 				this.target_distance = vector_length (rel_pos)  // target distance 
 				this.target_distance = (xround (this.target_distance, 2)); 
-				console.log (this.target_distance)
+				
 			}
 			
 			///////////////////////////////////////
@@ -2173,7 +2206,7 @@
 			///////////////////////////
 			this.fleet_main = function (active) {
 				this.shots_fired_this_turn = 0 
-				console.log (this.damage_report); 
+				
 				this.damage_report = jQuery.extend  (true, {}, this.damage_report_zero)
 				if (this.core_ship_list.equals ([])) {
 					this.status = 'dead'
