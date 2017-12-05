@@ -855,6 +855,13 @@
 	}
 	
 	///////////////////////////////////////////////////
+	
+	function dlog2 (content, test_message) {
+		console.log (test_message) 
+		console.log (content) 
+	}
+	
+	///////////////////////////////////////////////////
 	function xround (x,n) {
 		var factor = 10 ** n
 		x = x * factor 
@@ -1343,6 +1350,7 @@
 				
 					var shot = {}
 					shot.mothership = this.parent.name 
+					shot.target_name = target.name 
 					shot.caliber = this.cal 
 					shot.distance = distance 
 					shot.events = [] 
@@ -1521,6 +1529,7 @@
 				var hit_angle = args.hit_angle 
 				var hit_side = args.hit_side 
 				var shot = args.shot; 
+				 
 				console.log (shot); 
 				
 				var relevant_armor = this.parent.data.armor [hit_side]
@@ -1576,6 +1585,8 @@
 					}
 					
 				
+				} else {
+					shot.events.push ([ "Deflected by main armor"    ,"{'font-size':'10px', 'color':'grey' }"      ]); 
 				}
 				
 				$scope.turn_shot_list.push (shot); 
@@ -3126,7 +3137,10 @@
 					
 					<div class="black_line_v"> </div>
 					<div id="right_column">
-						<div class="column_row" ng-repeat="shot in turn_message_list track by $index"  style="font-size:10pt;" > {{shot.caliber }}  </div> 
+						<div  ng-repeat="shot in turn_shot_list track by $index"  style="display:flex;flex-direction:column;font-size=10px;" > 
+							<div class="column_row">  {{shot.target_name + "  hit"}}  </div>  
+							<div class="column_row" ng-repeat="e in shot.events track by $index" ng-style={{e[1]}} >  {{e [0]}}   </div> <!-- {{shot.events }} -->   
+						</div> 
 
 					</div>
 
