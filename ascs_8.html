@@ -3138,7 +3138,7 @@
 					<div class="black_line_v"> </div>
 					<div id="right_column">
 						<div  ng-repeat="shot in turn_shot_list track by $index"  style="display:flex;flex-direction:column;font-size=10px;" > 
-							<div class="column_row">  {{shot.target_name + "  hit"}}  </div>  
+							<div class="column_row" style="font-size:10px">  {{shot.target_name + "  hit by  " +   shot.mothership + "  cal  " +shot.caliber}}  </div>  
 							<div class="column_row" ng-repeat="e in shot.events track by $index" ng-style={{e[1]}} >  {{e [0]}}   </div> <!-- {{shot.events }} -->   
 						</div> 
 
