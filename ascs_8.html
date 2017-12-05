@@ -1275,6 +1275,7 @@
 		
 		
 		$scope.turn_message_list = []
+		$scope.turn_shot_list = []
 		//	Display Options 
 		$scope.target_lines_display_options = "all"
 		$scope.display_target_lines_fleets = []
@@ -1344,6 +1345,7 @@
 					shot.mothership = this.parent.name 
 					shot.caliber = this.cal 
 					shot.distance = distance 
+					shot.events = [] 
 					shot.p = {	// Probability 
 						"result" : 1, 
 						"mods" : []
@@ -1407,10 +1409,16 @@
 						
 						
 						var n = random_n (99) 
+						console.log (shot); 
 						for (let item of target_components) {
 							if ( item.hit_range.includes (n) ) {
 								$scope.turn_message_list.push ( [target.name + "  " + item.type +  "  hit " + pen, "{ }"])
-								item.process_damage (pen = pen, damage = damage, hit_angle = this.parent.fleet.target_hit_angle, hit_side = this.parent.fleet.target_hit_side, shot = shot)
+								item.process_damage ({
+									pen : pen,
+									damage : damage,
+									hit_angle : this.parent.fleet.target_hit_angle,
+									hit_side : this.parent.fleet.target_hit_side,
+									shot : shot})
 							}
 						
 						}
@@ -1432,7 +1440,15 @@
 			
 			
 			/////////////////////////////////
-			this.process_damage = function (pen, damage, shot) {
+			this.process_damage = function (args) {
+				var pen = args.pen 
+				var damage = args.damage 
+				var hit_angle = args.hit_angle 
+				var hit_side = args.hit_side 
+				var shot = args.shot; 
+				
+				console.log ("test 300"); 
+				console.log (shot) 
 				
 				this.parent.fleet.damage_report ["hits_taken"] += 1; 
 				
@@ -1499,13 +1515,17 @@
 			
 			
 			
-			this.process_damage = function (pen, damage, hit_angle, shot) {
+			this.process_damage = function (args) {
+				var pen = args.pen 
+				var damage = args.damage 
+				var hit_angle = args.hit_angle 
+				var hit_side = args.hit_side 
+				var shot = args.shot; 
+				console.log (shot); 
 				
 				var relevant_armor = this.parent.data.armor [hit_side]
 				
 				this.parent.fleet.damage_report ["hits_taken"] += 1; 
-				
-				
 				
 					var pen_90 = pen 
 					var angle_factor = Math.max (hit_angle / 1.57, 0.5)
@@ -1513,25 +1533,26 @@
 					$scope.turn_message_list.push ([ pen_90 + "    " + pen           ,"{'font-size':'10px', 'color':'blue' }"      ]) 
 				
 			
-				 
-				
 			
 				if (pen >= relevant_armor) {
 					this.parent.fleet.damage_report ["armor_penetrated"] += 1;
 					this.parent.fleet.damage_report ["damage_taken"] += damage; 
 					$scope.turn_message_list.push ([ "main_armor penetrated"    ,"{'font-size':'10px', 'color':'orange' }"      ]) 
+					shot.events.push ([ "main_armor penetrated"    ,"{'font-size':'10px', 'color':'orange' }"      ]); 
 					
 					var n = Math.random ()
 					
 					if (n < 0.3) {
 						this.parent.current_engine_hitpoints -= damage
 						this.parent.engine_hitpoints_q = xround (40 * this.parent.current_engine_hitpoints / this.parent.max_engine_hitpoints, 0)
-						$scope.turn_message_list.push ([this.parent.name + "  engine hit    " , "{'font-size':'10px', 'color':'purple' }"      ]) 
+						$scope.turn_message_list.push ([this.parent.name + "  engine hit    " , "{'font-size':'10px', 'color':'purple' }"      ])
+						shot.events.push ([this.parent.name + "  engine hit    " , "{'font-size':'10px', 'color':'purple' }"      ])
 						if ((this.parent.current_engine_hitpoints <= 0) && (this.parent.status == "ok") ) {
 							
 							this.parent.die () 
 							
 							$scope.turn_message_list.push ([this.parent.name + "  Engine Explosion, SHIP DESTROYED    " , "{'font-size':'20px', 'color':'red' }"      ]) 
+							shot.events.push ([this.parent.name + "  Engine Explosion, SHIP DESTROYED    " , "{'font-size':'20px', 'color':'red' }"      ]) 
 							
 							
 							
@@ -1548,6 +1569,7 @@
 						if ( (this.parent.hitpoints <= 0 ) && (this.parent.status == "ok")) {
 							this.parent.die ()
 							$scope.turn_message_list.push ([this.parent.name + "  Structure Destroyed, SHIP DESTROYED    " , "{'font-size':'20px', 'color':'red' }"      ]) 
+							shot.events.push ([this.parent.name + "  Structure Destroyed, SHIP DESTROYED    " , "{'font-size':'20px', 'color':'red' }"      ]) 
 							
 						
 						}
@@ -1555,6 +1577,8 @@
 					
 				
 				}
+				
+				$scope.turn_shot_list.push (shot); 
 			
 			}
 			
@@ -2473,6 +2497,9 @@
 			
 			
 			$scope.turn_message_list = []
+			//////////////////////////
+			console.log ($scope.turn_shot_list) 
+			$scope.turn_shot_list = [] 
 	
 			var complete_list = $scope.player_fleet_list.concat ($scope.enemy_fleet_list) 
 			
@@ -3099,32 +3126,7 @@
 					
 					<div class="black_line_v"> </div>
 					<div id="right_column">
-						<div class = "ship_display" ng-repeat="ship in active_enemy_fleet.core_ship_list" > 
-							<div class="name_type">
-								<div class="name"> {{ship.name}}</div>
-								<div class="name"> {{ship.fleet.element}} </div>
-								<div class="type"> {{ship.type}} </div>
-							</div>
-							<div class="hp_guns">
-								
-								
-								
-							</div>
-							<div class="hp_guns" style="padding-left:5px"> Hitpoints: &nbsp  {{ship.hitpoints}}  </div>
-							
-							<div class="hp" style="width:100%;height:20px;"> Engine Hp:  {{ship.current_engine_hitpoints}} </div>
-								<div class="hp" style="width:100%;height:20px;"> Target:  {{ship.target.name}} </div>
-								<div class="hp" style="width:100%;height:20px;"> Target Distance:  {{ship.target_distance}} </div>
-								<div class="hp" style="width:100%;height:20px;"> Shots fired:  {{ship.last_turn_shots_fired}} </div>
-								<div class="hp" style="width:100%;height:20px;"> Hits:  {{ship.last_turn_hits}} </div>
-								
-								<div class="hp" style="width:100%;height:20px;"> target angle: {{  ship.fleet.target_angle_degree}} </div>
-								<div class="hp" style="width:100%;height:20px;"> hit angle: {{  ship.fleet.target_hit_angle}} </div>
-								<div class="hp" style="width:100%;height:20px;"> fore arc: &nbsp {{ship.fleet.turrets_in_arc.f}} </div>
-								<div class="hp" style="width:100%;height:20px;"> aft arc: &nbsp {{ship.fleet.turrets_in_arc.a}} </div>
-								<div class="hp" style="width:100%;height:20px;"> br right arc: &nbsp {{ship.fleet.turrets_in_arc.br}} </div>
-								<div class="hp" style="width:100%;height:20px;"> br left arc: &nbsp {{ship.fleet.turrets_in_arc.bl}} </div>
-						</div>
+						<div class="column_row" ng-repeat="shot in turn_message_list track by $index"  style="font-size:10pt;" > {{shot.caliber }}  </div> 
 
 					</div>
 
