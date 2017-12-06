@@ -1474,6 +1474,7 @@
 				if (pen >= this.armor)  {
 					this.parent.fleet.damage_report ["armor_penetrated"] += 1; 
 					$scope.turn_message_list.push ( [ this.parent.name + "  turret  damaged",  "{'font-size':'10px', 'color':'grey' }"      ] )
+					shot.events.push ([ this.category + "  turret armor penetrated"    ,"{'font-size':'10px', 'color':'aqua' }"      ]); 
 					this.current_hitpoints -= damage; 
 					var cm = this.current_hitpoints / this.max_hitpoints 
 					if (cm < 0.5 ) { this.status ="hd"}
@@ -1493,7 +1494,11 @@
 						
 					}
 					// if (cm <= -10) {this.status = "g"}
+				} else {
+					shot.events.push ([ this.category + "  turret armor deflected"    ,"{'font-size':'10px', 'color':'grey' }"      ]); 
 				}
+				$scope.turn_shot_list.push (shot); 
+				
 				
 			}
 			///////////////////////////////
@@ -1550,6 +1555,7 @@
 					var pen_90 = pen 
 					var angle_factor = Math.max (hit_angle / 1.57, 0.5)
 					pen = xround (angle_factor * pen, 1) 
+					shot.pen.mods.push ('angled_hit  ' + pen); 
 					$scope.turn_message_list.push ([ pen_90 + "    " + pen           ,"{'font-size':'10px', 'color':'blue' }"      ]) 
 				
 			
@@ -3147,15 +3153,16 @@
 					</div>
 					
 					<div class="black_line_v"> </div>
-					<div id="right_column">
-						<div  ng-repeat="shot in turn_shot_list track by $index"  style="display:flex;flex-direction:column;font-size=10px;" > 
+					<div id="right_column" style="font-size:10px;">
+						<div  ng-repeat="shot in turn_shot_list track by $index"  style="border:1px ridge blue;display:flex;flex-direction:column;font-size=10px;" > 
 							<div class="column_row" style="font-size:10px"> 
 								{{shot.target_name + "  hit by  " +   shot.mothership + "  cal  " +shot.caliber}} 
-								<div style="padding-left:7px" ng-click="switch_shot_display (shot)"> X </div>
+								<div style="margin-left:7px;background-color:white;color:red;border-radius:8px;border:1px solid white;" ng-click="switch_shot_display (shot)"> {{(shot.display ? "-" : "+")}} </div>
 							</div>  
 							<div class="column_row" ng-repeat="e in shot.events track by $index" ng-style={{e[1]}} >  {{e [0]}}   </div> 
 							<div ng-if="shot.display">  
-								<div> {{shot.p.mods}} </div> 
+								<div > {{shot.p.mods}}
+								</div> 
 								<div> {{shot.pen.mods}} </div> 
 							</div> 
 						</div> 
