@@ -1297,6 +1297,16 @@
 			$scope.main_turret_list.remove (x) 
 		}
 		
+		$scope.alertx = function (stuff) {
+			alert (stuff) 
+		}
+		
+		$scope.switch_shot_display = function (shot) {
+			if (shot.display == false ) {shot.display = true}
+			else {shot.display = false}
+			console.log (shot)
+		}
+		
 		
 		////////////////////////////////////////////////////
 		////////////////// 		TURRET Object 		///////
@@ -1354,6 +1364,7 @@
 					shot.caliber = this.cal 
 					shot.distance = distance 
 					shot.events = [] 
+					shot.display = false; 
 					shot.p = {	// Probability 
 						"result" : 1, 
 						"mods" : []
@@ -3138,12 +3149,17 @@
 					<div class="black_line_v"> </div>
 					<div id="right_column">
 						<div  ng-repeat="shot in turn_shot_list track by $index"  style="display:flex;flex-direction:column;font-size=10px;" > 
-							<div class="column_row" style="font-size:10px">  {{shot.target_name + "  hit by  " +   shot.mothership + "  cal  " +shot.caliber}}  </div>  
-							<div class="column_row" ng-repeat="e in shot.events track by $index" ng-style={{e[1]}} >  {{e [0]}}   </div> <!-- {{shot.events }} -->   
+							<div class="column_row" style="font-size:10px"> 
+								{{shot.target_name + "  hit by  " +   shot.mothership + "  cal  " +shot.caliber}} 
+								<div style="padding-left:7px" ng-click="switch_shot_display (shot)"> X </div>
+							</div>  
+							<div class="column_row" ng-repeat="e in shot.events track by $index" ng-style={{e[1]}} >  {{e [0]}}   </div> 
+							<div ng-if="shot.display">  
+								<div> {{shot.p.mods}} </div> 
+								<div> {{shot.pen.mods}} </div> 
+							</div> 
 						</div> 
-
 					</div>
-
 				</div>
 				<div class="black_line_h"> </div>
 				<div id="footer_row">
