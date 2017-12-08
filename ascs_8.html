@@ -353,13 +353,13 @@
 					border-bottom-color:#6c6c6c;
 					box-sizing:border-box;
 					background:url("knob_bg.png");
-					display:flex;
-					flex-direction:column;
+					overflow-y:scroll;
 				}
 				
 				#middle_column {
 					box-sizing:border-box;
 					position:relative;
+					width:1px;
 					
 					height:100%;
 					flex-grow:1;
@@ -663,26 +663,23 @@
 				
 					#player_ship_list {
 						position:relative; 
-						overflow-y:scroll;
-						padding-right:8px;
 						width:100%;
-						height:300px;
-						border-style:ridge;
-						flex-grow:1;
-						display:flex;
-						flex-direction:column;
+						
 					}
 					
 						.ship_display {
 							width:100%;
 							
 							border-style:ridge;
-							border-color:grey;
+							
 							overflow:hidden;
 							color:white;
 							
 							display:flex;
 							flex-direction:column;
+							flex-grow:1; 
+							flex-shrink:1;
+							margin-bottom:10px;
 						}
 						
 							.name_type {
@@ -3132,6 +3129,9 @@
 								</div>
 								<div class="hp" style="width:100%;height:20px;"> br right arc: {{fleet.turrets_in_arc.br}} </div>
 								<div class="hp" style="width:100%;height:20px;"> br left arc: {{fleet.turrets_in_arc.bl}} </div>
+							<div style="border:2px ridge aqua;width:100%;height:200px;"> 
+								Test 
+							</div>
 							
 							
 							</div>
