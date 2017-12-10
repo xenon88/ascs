@@ -570,6 +570,7 @@
 					flex-direction:row;
 					border-style:ridge;
 					border-color:grey;
+					margin-bottom:10px;
 				
 				}
 				
@@ -669,12 +670,9 @@
 					
 						.ship_display {
 							width:100%;
-							
 							border-style:ridge;
-							
 							overflow:hidden;
 							color:white;
-							
 							display:flex;
 							flex-direction:column;
 							flex-grow:1; 
@@ -686,9 +684,7 @@
 								position:relative;
 								width:100%;
 								height:20px;
-								
 								overflow:hidden;
-								
 								display:flex;
 								flex-direction:row;
 							}
@@ -699,7 +695,6 @@
 									width:60%;
 									flex-grow:1;
 									padding-left:5px;
-									
 								}
 								
 								.type {
@@ -736,36 +731,85 @@
 									text-align:right;
 								}
 					
-					.arc {
-						position:relative;
-						width:100px;
-						height:100%;
-						padding-left:5px;
-						display:flex;
-						flex-direction:row;
-					}
-						
-						.green_light {
+						.arc {
 							position:relative;
-							float:right;
-							height:10px;
-							width:10px;
-							margin-top:7px;
-							margin-left:10px;
-							background:url("green_button.png");
-							background-size:100% 100%;
+							width:100px;
+							height:100%;
+							padding-left:5px;
+							display:flex;
+							flex-direction:row;
 						}
+							
+							.green_light {
+								position:relative;
+								float:right;
+								height:10px;
+								width:10px;
+								margin-top:7px;
+								margin-left:10px;
+								background:url("green_button.png");
+								background-size:100% 100%;
+							}
+							
+							.red_light {
+								position:relative;
+								float:right;
+								height:10px;
+								width:10px;
+								margin-top:7px;
+								margin-left:10px;
+								background:url("red_button.png");
+								background-size:100% 100%;
+							}
 						
-						.red_light {
-							position:relative;
-							float:right;
-							height:10px;
-							width:10px;
-							margin-top:7px;
-							margin-left:10px;
-							background:url("red_button.png");
-							background-size:100% 100%;
+						.escort_display {
+							width:100%;
+							height:200px;
+							border:2px ridge aqua;
+							display:flex; 
+							flex-direction:column; 
 						}
+							.escort_display_top_row {
+								height:50px; 
+								background-color:blue; 
+								margin-left:50px;
+								margin-right:50px;
+							}
+							
+							.escort_display_middle_row {
+								height:1px; 
+								background-color:green; 
+								flex-grow:1; 
+								display:flex;
+								flex-direction:row;
+							}
+							
+								.escort_display_left_column {
+									height:100%; 
+									width:50px;
+									background-color:white; 
+								}
+								
+								.escort_display_middle_column {
+									height:100%; 
+									width:1px;
+									flex-grow:1;
+									background-color:black; 
+								}
+								
+								.escort_display_right_column {
+									height:100%; 
+									width:50px;
+									background-color:white; 
+								}
+							
+							
+							.escort_display_bottom_row {
+								height:50px; 
+								background-color:red;
+								margin-left:50px;
+								margin-right:50px;
+							}
 	</style>
 	
 	
@@ -3129,8 +3173,15 @@
 								</div>
 								<div class="hp" style="width:100%;height:20px;"> br right arc: {{fleet.turrets_in_arc.br}} </div>
 								<div class="hp" style="width:100%;height:20px;"> br left arc: {{fleet.turrets_in_arc.bl}} </div>
-							<div style="border:2px ridge aqua;width:100%;height:200px;"> 
-								Test 
+							<div class="escort_display"> 
+								<div class="escort_display_top_row"> </div>
+								<div class="escort_display_middle_row"> 
+									<div class="escort_display_left_column"> </div>
+									<div class="escort_display_middle_column"> </div>
+									<div class="escort_display_right_column"> </div>
+								</div>
+								<div class="escort_display_bottom_row"> </div>
+								
 							</div>
 							
 							
