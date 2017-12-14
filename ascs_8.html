@@ -765,14 +765,30 @@
 							width:100%;
 							height:200px;
 							border:2px ridge aqua;
+							color:black;
 							display:flex; 
 							flex-direction:column; 
 						}
+						
+							
+							.escort_display_symbol {
+								height:8px; 
+								width:8px; 
+								margin:2px;
+								background:url("red_button.png");
+								background-size:100% 100%;
+							}
+							
 							.escort_display_top_row {
 								height:50px; 
-								background-color:blue; 
+								// background-color:blue; 
 								margin-left:50px;
 								margin-right:50px;
+								display:flex;
+								flex-direction:row; 
+								flex-wrap:wrap;
+								border:2px ridge aqua;
+								border-radius:5px;
 							}
 							
 							.escort_display_middle_row {
@@ -786,7 +802,11 @@
 								.escort_display_left_column {
 									height:100%; 
 									width:50px;
-									background-color:white; 
+									display:flex;
+									flex-direction:column;
+									flex-wrap:wrap;
+									border:2px ridge aqua;
+									border-radius:5px;
 								}
 								
 								.escort_display_middle_column {
@@ -799,15 +819,23 @@
 								.escort_display_right_column {
 									height:100%; 
 									width:50px;
-									background-color:white; 
+									display:flex;
+									flex-direction:column;
+									flex-wrap:wrap;
+									border:2px ridge aqua;
+									border-radius:5px;
 								}
 							
 							
 							.escort_display_bottom_row {
 								height:50px; 
-								background-color:red;
 								margin-left:50px;
 								margin-right:50px;
+								display:flex;
+								flex-direction:row;
+								flex-wrap:wrap;
+								border:2px ridge aqua;
+								border-radius:5px;
 							}
 	</style>
 		
@@ -2510,14 +2538,24 @@
 		$scope.fleet_a.core_ship_list.push (s) 
 		
 				//		Escort ships 	
-		for (var i = 0; i < 3; i++) {
+		for (var i = 0; i < 30; i++) {
 			s = new $scope.ship_factory (data = HORNET)
 			$scope.fleet_a.escort_ships.f.push (s) 
 		}	
 		
-		for (var i = 0; i < 5; i++) {
+		for (var i = 0; i < 20; i++) {
 			s = new $scope.ship_factory (data = HORNET)
 			$scope.fleet_a.escort_ships.l.push (s) 
+		}	
+		
+		for (var i = 0; i < 20; i++) {
+			s = new $scope.ship_factory (data = HORNET)
+			$scope.fleet_a.escort_ships.r.push (s) 
+		}	
+		
+		for (var i = 0; i < 20; i++) {
+			s = new $scope.ship_factory (data = HORNET)
+			$scope.fleet_a.escort_ships.a.push (s) 
 		}	
 		
 		///			Fleet_b
@@ -3191,13 +3229,16 @@
 								<div class="hp" style="width:100%;height:20px;"> br right arc: {{fleet.turrets_in_arc.br}} </div>
 								<div class="hp" style="width:100%;height:20px;"> br left arc: {{fleet.turrets_in_arc.bl}} </div>
 							<div class="escort_display"> 
-								<div class="escort_display_top_row"> </div>
-								<div class="escort_display_middle_row"> 
-									<div class="escort_display_left_column"> </div>
-									<div class="escort_display_middle_column"> </div>
-									<div class="escort_display_right_column"> </div>
+								<div class="escort_display_top_row">
+									<div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.f" > </div>
 								</div>
-								<div class="escort_display_bottom_row"> </div>
+								<div class="escort_display_middle_row"> 
+									<div class="escort_display_left_column"> 
+										<div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.l" > </div></div>
+									<div class="escort_display_middle_column"> </div>
+									<div class="escort_display_right_column"><div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.r" > </div> </div>
+								</div>
+								<div class="escort_display_bottom_row"> <div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.a" > </div></div>
 								
 							</div>
 							
