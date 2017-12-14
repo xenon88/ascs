@@ -29,7 +29,6 @@
 	<script src="xfunctions.js"> </script>
 	<script src="ships.js"> </script>
 	<style>
-	
 		
 		
 		.black_line_h {
@@ -811,6 +810,8 @@
 								margin-right:50px;
 							}
 	</style>
+		
+		
 	
 	
 	
@@ -830,9 +831,6 @@
 			function  (newVal, oldVal, $scope)  {
 				$(element).css ("width", $scope.ship.hitpoints_q +"px"  )  
 			})
-		
-				
-				
 				
 			}
 		}
@@ -877,10 +875,18 @@
 	});
 	
 	
-	
-	
-	
 	//////////////////////////////////////////
+	function concat_object_values (my_object) {
+		var result = []; 
+		Object.keys (my_object).forEach (function (key, index) {
+			var value = my_object[key]; 
+			result = result.concat (value);  
+		})
+		return result 
+	}
+	
+	
+	///////////////////////////////////////////
 	
 	function makeSVG(tag, attrs) {
 		var el= document.createElementNS('http://www.w3.org/2000/svg', tag);
@@ -1434,24 +1440,13 @@
 					shot.pen.result = pen; 
 					shot.pen.mods.push ("Distance:  " + pen); 
 					
-					
-					
-					
 					dice = Math.random () 
 					shot.dice = dice 
-					
-					
-					
-					
-					
 					
 					if ( p > dice ) {
 						
 						// dice = Math.random () 
 						//		check vertical hit
-						
-						
-						
 						
 						
 						var target_components = target.elements
@@ -1927,7 +1922,12 @@
 			this.position = position
 			this.name = name
 			this.core_ship_list = []
-			this.ring_ship_list = []
+			this.escort_ships = {
+				f: [], 
+				r: [],
+				a: [],
+				l: []
+			}
 			this.team = team 
 			this.graphic_symbol = graphic_symbol 
 			this.target_fleet = 'na'
@@ -1962,7 +1962,11 @@
 			*/
 			this.remove_ship = function (ship) {
 				this.core_ship_list.remove (ship)
-				this.ring_ship_list.remove (ship)
+				this.escort_ships.f.remove (ship)
+				this.escort_ships.r.remove (ship)
+				this.escort_ships.a.remove (ship)
+				this.escort_ships.l.remove (ship)
+				
 				
 				if (this.core_ship_list.length == 0) {
 					this.die () 
@@ -2188,6 +2192,7 @@
 			
 			////////////////////////////
 			this.escort_circle_graphics = function () {
+				return ""; 
 				var stroke_width = (Math.floor ( this.ring_ship_list.length ** 0.5) ) / 5
 				
 				var distance = 40
@@ -2274,7 +2279,9 @@
 			
 			///////////////////////////
 			this.update_ships  = function () {
-				for (let item of this.core_ship_list.concat (this.ring_ship_list)) {
+				var escort_list = concat_object_values (this.escort_ships); 
+				var complete_ship_list = this.core_ship_list.concat (escort_list)
+				for (let item of complete_ship_list) {
 					item.update (this);
 				}
 			}
@@ -2282,7 +2289,9 @@
 			
 			///////////////////////////
 			this.update_ships_2 = function () {
-				for (let item of this.core_ship_list.concat (this.ring_ship_list)) {
+				var escort_list = concat_object_values (this.escort_ships); 
+				var complete_ship_list = this.core_ship_list.concat (escort_list)
+				for (let item of complete_ship_list) {
 					item.update_2 ()
 				}
 			}
@@ -2290,7 +2299,9 @@
 			
 			///////////////////////////
 			this.update_ships_3 = function () {
-				for (let item of this.core_ship_list.concat (this.ring_ship_list)) {
+				var escort_list = concat_object_values (this.escort_ships); 
+				var complete_ship_list = this.core_ship_list.concat (escort_list)
+				for (let item of complete_ship_list) {
 					item.update_3 ()
 				}
 			}
@@ -2498,9 +2509,15 @@
 		s = new $scope.ship_factory (data = CONCORDIA)
 		$scope.fleet_a.core_ship_list.push (s) 
 		
-		for (var i = 0; i < 10; i++) {
+				//		Escort ships 	
+		for (var i = 0; i < 3; i++) {
 			s = new $scope.ship_factory (data = HORNET)
-			$scope.fleet_a.ring_ship_list.push (s) 
+			$scope.fleet_a.escort_ships.f.push (s) 
+		}	
+		
+		for (var i = 0; i < 5; i++) {
+			s = new $scope.ship_factory (data = HORNET)
+			$scope.fleet_a.escort_ships.l.push (s) 
 		}	
 		
 		///			Fleet_b
