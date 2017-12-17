@@ -2220,9 +2220,9 @@
 			
 			////////////////////////////
 			this.escort_circle_graphics = function () {
-				return ""; 
-				var stroke_width = (Math.floor ( this.ring_ship_list.length ** 0.5) ) / 5
 				
+				// var stroke_width = (Math.floor ( this.ring_ship_list.length ** 0.5) ) / 5
+				// var stroke_width = 0.5
 				var distance = 40
 				
 				
@@ -2231,25 +2231,25 @@
 				//		
 						// point_1 
 				var sides_list = [
-									{"angle": 0, "color": "yellow"},
-									{"angle": 90, "color": "yellow"},
-									{"angle": 180, "color": "yellow"},
-									{"angle": 270, "color": "yellow"},
+									{"side": "f", "angle": 0, "color": "yellow"},
+									{"side": "r", "angle": 90, "color": "orange"},
+									{"side": "a", "angle": 180, "color": "red"},
+									{"side": "l", "angle": 270, "color": "aqua"},
 								]
 				
 				for (let item of sides_list) {
 					
-				
+					var stroke_width = (Math.floor ( this.escort_ships[item.side].length ** 0.5) ) / 5
 				
 				
 					var middle_angle = angle_go_left (this.current_course, item.angle /57.3) 
-					var alpha = angle_go_left (middle_angle, 45 / 57.3) 
+					var alpha = angle_go_left (middle_angle, 40 / 57.3) 
 					var point_1 = vround (extrapolate_line (this.position, 0, distance, alpha).end,0 )
 					var point_1_s = point_to_string (point_1) 
 					
 					
 						// point_2 
-					var alpha = angle_go_right (middle_angle, 45 / 57.3) 
+					var alpha = angle_go_right (middle_angle, 40 / 57.3) 
 					var point_2 = vround (extrapolate_line (this.position, 0, distance, alpha).end,0) 
 					var point_2_s = point_to_string (point_2)
 					
@@ -2543,17 +2543,17 @@
 			$scope.fleet_a.escort_ships.f.push (s) 
 		}	
 		
-		for (var i = 0; i < 20; i++) {
+		for (var i = 0; i < 5; i++) {
 			s = new $scope.ship_factory (data = HORNET)
 			$scope.fleet_a.escort_ships.l.push (s) 
 		}	
 		
-		for (var i = 0; i < 20; i++) {
+		for (var i = 0; i < 2; i++) {
 			s = new $scope.ship_factory (data = HORNET)
 			$scope.fleet_a.escort_ships.r.push (s) 
 		}	
 		
-		for (var i = 0; i < 20; i++) {
+		for (var i = 0; i < 10; i++) {
 			s = new $scope.ship_factory (data = HORNET)
 			$scope.fleet_a.escort_ships.a.push (s) 
 		}	
