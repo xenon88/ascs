@@ -814,7 +814,24 @@
 									width:1px;
 									flex-grow:1;
 									background-color:black; 
+									display:flex;
+									flex-direction:column; 
 								}
+									.escort_display_distance {
+										height:20px;
+										width:100%;
+										background-color:orange;
+										border:2px ridge aqua; 
+										display:flex;
+										flex-direction:row; 
+									}
+									
+										#escort_display_distance_number {
+											height:100%;
+											width:40px;
+											background-color:green;
+											border:2px ridge grey; 
+										}
 								
 								.escort_display_right_column {
 									height:100%; 
@@ -1949,6 +1966,7 @@
 			this.speed = 25
 			this.position = position
 			this.name = name
+			this.escort_radius = 50 
 			this.core_ship_list = []
 			this.escort_ships = {
 				f: [], 
@@ -2223,7 +2241,7 @@
 				
 				// var stroke_width = (Math.floor ( this.ring_ship_list.length ** 0.5) ) / 5
 				// var stroke_width = 0.5
-				var distance = 40
+				var distance = this.escort_radius; 
 				
 				
 				
@@ -3235,7 +3253,11 @@
 								<div class="escort_display_middle_row"> 
 									<div class="escort_display_left_column"> 
 										<div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.l" > </div></div>
-									<div class="escort_display_middle_column"> </div>
+									<div class="escort_display_middle_column"> 
+										<div class="escort_display_distance">
+											<div id="escort_display_distance_number"> {{fleet.escort_radius}} </div>
+										</div>
+									</div>
 									<div class="escort_display_right_column"><div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.r" > </div> </div>
 								</div>
 								<div class="escort_display_bottom_row"> <div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.a" > </div></div>
