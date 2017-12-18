@@ -824,14 +824,19 @@
 										border:2px ridge aqua; 
 										display:flex;
 										flex-direction:row; 
+										font-size:10px;
 									}
 									
-										#escort_display_distance_number {
+										.escort_display_distance_number {
 											height:100%;
 											width:40px;
 											background-color:green;
 											border:2px ridge grey; 
+											flex-grow:1; 
+											text-align:center;
 										}
+										
+										
 								
 								.escort_display_right_column {
 									height:100%; 
@@ -1397,6 +1402,14 @@
 			if (shot.display == false ) {shot.display = true}
 			else {shot.display = false}
 			console.log (shot)
+		}
+		
+		$scope.enlarge_escort_radius = function (fleet) {
+			fleet.escort_radius += 10; 
+		}
+		
+		$scope.decrease_escort_radius = function (fleet) {
+			fleet.escort_radius -= 10; 
 		}
 		
 		
@@ -3255,7 +3268,9 @@
 										<div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.l" > </div></div>
 									<div class="escort_display_middle_column"> 
 										<div class="escort_display_distance">
-											<div id="escort_display_distance_number"> {{fleet.escort_radius}} </div>
+											<div class="escort_display_distance_number"> {{fleet.escort_radius}} </div>
+											<div class="escort_display_distance_number" ng-click="enlarge_escort_radius (fleet)"> + </div>
+											<div class="escort_display_distance_number" ng-click="decrease_escort_radius (fleet)"> - </div>
 										</div>
 									</div>
 									<div class="escort_display_right_column"><div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.r" > </div> </div>
