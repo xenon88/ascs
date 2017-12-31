@@ -775,9 +775,32 @@
 								height:8px; 
 								width:8px; 
 								margin:2px;
-								background:url("red_button.png");
+								background:url("yellow_button2.png");
 								background-size:100% 100%;
 							}
+							
+							
+							
+							.escort_display_send_to_middle {
+								height:20px;
+								width:100%;
+								background-color:orange;
+								border:2px ridge aqua; 
+								display:flex;
+								flex-direction:row; 
+								font-size:10px;
+							}
+							
+								.escort_display_send_to_middle_number {
+									height:100%; 
+									width:20px; 
+									flex-grow:1;
+									background-color:grey; 
+									border:1px solid green;
+									text-align:center;
+								}
+							
+							
 							
 							.escort_display_top_row {
 								height:50px; 
@@ -823,7 +846,12 @@
 										height:1px; 
 										flex-grow:2; 
 										background-color:aqua; 
+										display:flex;
+										flex-direction:row; 
+										flex-wrap:wrap;
 									}
+									
+									
 									
 									.escort_display_middle_column_bottom_row {
 										width:100%; 
@@ -1427,6 +1455,49 @@
 			fleet.escort_radius -= 10; 
 		}
 		
+		////////////////////////////////////////////
+		$scope.escort_display_send_to_middle = function (fleet,number) {
+			var sides = ['f', 'r', 'a', 'l'];
+			var new_list = []; 
+			for (let side of sides) {
+				// alert (fleet.escort_ships [side].length); 
+				var side_length = fleet.escort_ships [side].length; 
+				var percentage_length = Math.ceil (side_length * number); 
+				// alert (percentage_length);
+				for (var i = 0; i < percentage_length; i++) {
+					// alert (side + "  " + i +  "   removing ship"); 
+					var ship_to_remove = fleet.escort_ships [side] [0]; 
+					fleet.escort_ships [side].remove (ship_to_remove);
+					new_list.push (ship_to_remove); 
+				}
+			}
+			
+			fleet.escort_ships ["selected"] = fleet.escort_ships ["selected"].concat (new_list);
+		}
+		///////////////////////////////////////////////
+		
+		$scope.create_flottila = function (fleet) {
+			var new_flottila = new $scope.fleet_factory ({
+				name:"flottila", 
+				position: fleet.position.slice (0), 
+				team: fleet.team, 
+				graphic_symbol:"yellow_button.png", 
+				fleet_type: "flottila"
+				}); 
+				
+			for (let item of fleet.escort_ships ["selected"]) {
+				new_flottila.core_ship_list.push (item); 
+			}  
+				
+			if (fleet.team = "p") {
+				$scope.player_fleet_list.push (new_flottila);
+			} 
+			
+			if (fleet.team = "e") {
+				$scope.enemy_fleet_list.push (new_flottila);
+			} 
+		
+		}
 		
 		////////////////////////////////////////////////////
 		////////////////// 		TURRET Object 		///////
@@ -1537,7 +1608,7 @@
 						
 						
 						var n = random_n (99) 
-						console.log (shot); 
+						
 						for (let item of target_components) {
 							if ( item.hit_range.includes (n) ) {
 								$scope.turn_message_list.push ( [target.name + "  " + item.type +  "  hit " + pen, "{ }"])
@@ -1575,8 +1646,6 @@
 				var hit_side = args.hit_side 
 				var shot = args.shot; 
 				
-				console.log ("test 300"); 
-				console.log (shot) 
 				
 				this.parent.fleet.damage_report ["hits_taken"] += 1; 
 				
@@ -1655,7 +1724,7 @@
 				var hit_side = args.hit_side 
 				var shot = args.shot; 
 				 
-				console.log (shot); 
+				
 				
 				var relevant_armor = this.parent.data.armor [hit_side]
 				
@@ -1732,7 +1801,6 @@
 		////////////////// 		Ship Object 		///////
 		///////////////////////////////////////////////////
 		$scope.ship_factory = function (data) {
-			console.log (data);
 			this.data = data 
 			this.status = "ok"
 			this.name = this.data.name; 
@@ -1999,7 +2067,8 @@
 				f: [], 
 				r: [],
 				a: [],
-				l: []
+				l: [], 
+				selected: []
 			}
 			this.team = args.team 
 			
@@ -2027,7 +2096,7 @@
 			}
 			
 			
-			console.log (this.damage_report) 
+			
 			
 			//////////////////////////
 			/*
@@ -2692,7 +2761,7 @@
 			
 			$scope.turn_message_list = []
 			//////////////////////////
-			console.log ($scope.turn_shot_list) 
+			
 			$scope.turn_shot_list = [] 
 	
 			var complete_list = $scope.player_fleet_list.concat ($scope.enemy_fleet_list) 
@@ -3280,6 +3349,7 @@
 								<div class="name_type">
 									<div class="name"> {{fleet.name}}</div>
 								</div>
+								<div class="hp" style="width:100%;height:20px;"> {{fleet.target_fleet.name}} </div>
 								<div class="hp" style="width:100%;height:20px;"> target angle: {{  fleet.target_angle_degree}} </div>
 								<div class="hp" style="width:100%;height:20px;"> hit angle: {{  fleet.target_hit_angle}} </div>
 								<div class="hp" style="width:100%;height:20px;"> Distance:  {{fleet.target_distance}} </div>
@@ -3304,19 +3374,35 @@
 									<div class="escort_display_distance_number" ng-click="enlarge_escort_radius (fleet)"> + </div>
 									<div class="escort_display_distance_number" ng-click="decrease_escort_radius (fleet)"> - </div>
 								</div>
+								
+								<div class="escort_display_send_to_middle"> 
+									<div class="escort_display_send_to_middle_number" ng-click="escort_display_send_to_middle (fleet, 0.25)"> 25 </div>
+									<div class="escort_display_send_to_middle_number" ng-click="escort_display_send_to_middle (fleet, 0.50)"> 50 </div>
+									<div class="escort_display_send_to_middle_number" ng-click="escort_display_send_to_middle (fleet, 0.75)"> 75 </div>
+									<div class="escort_display_send_to_middle_number" ng-click="escort_display_send_to_middle (fleet, 1)"> All </div>
+								</div>
+								
 								<div class="escort_display_top_row">
 									<div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.f" > </div>
 								</div>
 								<div class="escort_display_middle_row"> 
 									<div class="escort_display_left_column"> 
-										<div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.l" > </div></div>
-									<div class="escort_display_middle_column"> 
-										<div class="escort_display_middle_column_top_row"> </div>
-										<div class="escort_display_middle_column_bottom_row"> </div>
+										<div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.l" > </div>
 									</div>
-									<div class="escort_display_right_column"><div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.r" > </div> </div>
+									<div class="escort_display_middle_column"> 
+										<div class="escort_display_middle_column_top_row">
+											<div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.selected" > </div>
+										</div>
+										<div class="escort_display_middle_column_bottom_row">
+											<div class="escort_display_create_flottila_button" ng-click="create_flottila (fleet)"> Create Flottila</div>
+										</div>
+									</div>
+										<div class="escort_display_right_column"><div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.r" > </div>
+									</div>
 								</div>
-								<div class="escort_display_bottom_row"> <div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.a" > </div></div>
+								<div class="escort_display_bottom_row">
+									<div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.a" > </div>
+								</div>
 								
 							</div>
 							
@@ -3336,12 +3422,12 @@
 					<div class="black_line_v"> </div>
 					
 					<div id="right_0_column"> 
-						<div class="column_row" ng-repeat="m in turn_message_list track by $index" ng-style={{m[1]}}  style="font-size:10pt;" > {{m [0]}}  </div>  <!-- ng-style={{m[1]}} --> 
+						<div class="column_row" ng-repeat="m in turn_message_list.slice (0,20) track by $index" ng-style={{m[1]}}  style="font-size:10pt;" > {{m [0]}}  </div>  <!-- ng-style={{m[1]}} --> 
 					</div>
 					
 					<div class="black_line_v"> </div>
 					<div id="right_column" style="font-size:10px;">
-						<div  ng-repeat="shot in turn_shot_list track by $index"  style="border:1px ridge blue;display:flex;flex-direction:column;font-size=10px;" > 
+						<div  ng-repeat="shot in turn_shot_list.slice (0,20) track by $index"  style="border:1px ridge blue;display:flex;flex-direction:column;font-size=10px;" > 
 							<div class="column_row" style="font-size:10px"> 
 								{{shot.target_name + "  hit by  " +   shot.mothership + "  cal  " +shot.caliber}} 
 								<div style="margin-left:7px;background-color:white;color:red;border-radius:8px;border:1px solid white;" ng-click="switch_shot_display (shot)"> {{(shot.display ? "-" : "+")}} </div>
