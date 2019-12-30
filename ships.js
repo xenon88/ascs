@@ -346,7 +346,7 @@ var HORNET = {
 	"ship_type":"escort",
 	"hitpoints":10,
 	"mass":10,
-	"top_speed":50,
+	"top_speed":60,
 	"torpedoes":1,
 	"armor": {
 		"f":1,

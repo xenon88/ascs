@@ -29,6 +29,37 @@
 	<script src="xfunctions.js"> </script>
 	<script src="ships.js"> </script>
 	<style>
+		::-webkit-scrollbar {
+			width: 10px;
+			height: 10px;
+		}
+		
+				/* Track */
+		::-webkit-scrollbar-track {
+			background: #f1f1f1; 
+		}
+		 
+		/* Handle */
+		::-webkit-scrollbar-thumb {
+			background: #888; 
+		}
+
+		/* Handle on hover */
+		::-webkit-scrollbar-thumb:hover {
+			background: #555; 
+		}
+		
+		.blink_me {
+			animation: blinker 0.3s linear 3;
+		}
+		
+		.no_border {
+			border-color:rgba(100,100,100,0)!important;
+		}
+		
+		.red_border {
+			border-color:red;
+		}
 		
 		
 		.black_line_h {
@@ -43,6 +74,20 @@
 			width:1px;
 			height:100%;
 			background-color:black;
+		}
+		
+		.close_button {
+			position:relative;
+			width:15px;
+			height:15px;
+			color:red;
+			background-color:white;
+			border:1px solid grey;
+			border-radius:3px;
+			padding-top:5px;
+			text-align:center;
+			line-height:0px;
+			margin:auto;
 		}
 		
 		
@@ -198,6 +243,14 @@
 						border-bottom-color:#5c5c5c;
 						
 					}
+						
+						#header_lower_bar {
+							overflow-x:scroll;
+							::-webkit-scrollbar {
+								  width: 40px;
+								  height: 40px;
+							} 
+						}
 					
 						#turn_button {
 							position:relative;
@@ -373,7 +426,7 @@
 					
 				}
 				
-					.fleet_button {
+					.main_fleet_button {
 						position:absolute;
 						top:-50px;
 						left:-50px;
@@ -383,7 +436,18 @@
 						width:14px;
 						background:url("green_button.png");
 						background-size:100% 100%;
+					}
 					
+					.flottila_button {
+						position:absolute;
+						top:-50px;
+						left:-50px;
+						margin-left:-5px;
+						margin-top:-5px;
+						height:10px;
+						width:10px;
+						background:url("green_button.png");
+						background-size:100% 100%;
 					}
 					
 					
@@ -667,7 +731,7 @@
 						
 					}
 					
-						.ship_display {
+						.ship_display_outer {
 							width:100%;
 							border-style:ridge;
 							overflow:hidden;
@@ -678,230 +742,242 @@
 							flex-shrink:1;
 							margin-bottom:10px;
 						}
-						
-							.name_type {
-								position:relative;
+							.ship_display_inner {
+								font-size:12px;
 								width:100%;
-								height:20px;
 								overflow:hidden;
+								color:white;
 								display:flex;
-								flex-direction:row;
-							}
-							
-								.name {
-									position:relative;
-									height:100%;
-									width:60%;
-									flex-grow:1;
-									padding-left:5px;
-								}
-								
-								.type {
-									position:relative;
-									height:100%;
-									width:30px;
-									padding-right:5px;
-									text-align:right;
-								}
-							
-							.hp_guns {
-								position:relative;
-								width:100%;
-								height:20px;
-								overflow:hidden;
-								
-								display:flex;
-								flex-direction:row;
-							}
-							
-								.hp {
-									position:relative;
-									width:100px;
-									height:100%;
-									padding-left:5px;
-								}
-								
-								.guns {
-									position:relative;
-									height:100%;
-									width:60%;
-									flex-grow:1;
-									padding-right:5px;
-									text-align:right;
-								}
-					
-						.arc {
-							position:relative;
-							width:100px;
-							height:100%;
-							padding-left:5px;
-							display:flex;
-							flex-direction:row;
-						}
-							
-							.green_light {
-								position:relative;
-								float:right;
-								height:10px;
-								width:10px;
-								margin-top:7px;
-								margin-left:10px;
-								background:url("green_button.png");
-								background-size:100% 100%;
-							}
-							
-							.red_light {
-								position:relative;
-								float:right;
-								height:10px;
-								width:10px;
-								margin-top:7px;
-								margin-left:10px;
-								background:url("red_button.png");
-								background-size:100% 100%;
-							}
-						
-						.escort_display {
-							width:100%;
-							height:200px;
-							border:2px ridge aqua;
-							color:black;
-							display:flex; 
-							flex-direction:column; 
-						}
-						
-							
-							.escort_display_symbol {
-								height:8px; 
-								width:8px; 
-								margin:2px;
-								background:url("yellow_button2.png");
-								background-size:100% 100%;
-							}
-							
-							
-							
-							.escort_display_send_to_middle {
-								height:20px;
-								width:100%;
-								background-color:orange;
-								border:2px ridge aqua; 
-								display:flex;
-								flex-direction:row; 
-								font-size:10px;
-							}
-							
-								.escort_display_send_to_middle_number {
-									height:100%; 
-									width:20px; 
-									flex-grow:1;
-									background-color:grey; 
-									border:1px solid green;
-									text-align:center;
-								}
-							
-							
-							
-							.escort_display_top_row {
-								height:50px; 
-								// background-color:blue; 
-								margin-left:50px;
-								margin-right:50px;
-								display:flex;
-								flex-direction:row; 
-								flex-wrap:wrap;
-								border:2px ridge aqua;
-								border-radius:5px;
-							}
-							
-							.escort_display_middle_row {
-								height:1px; 
-								background-color:green; 
+								flex-direction:column;
 								flex-grow:1; 
+								flex-shrink:1;
+							}
+						
+							
+						
+								.name_type {
+									position:relative;
+									width:100%;
+									height:20px;
+									overflow:hidden;
+									display:flex;
+									flex-direction:row;
+								}
+								
+									.name {
+										position:relative;
+										height:100%;
+										width:60%;
+										flex-grow:1;
+										padding-left:5px;
+									}
+									
+									.type {
+										position:relative;
+										height:100%;
+										width:30px;
+										padding-right:5px;
+										text-align:right;
+									}
+								
+								.hp_guns {
+									position:relative;
+									width:100%;
+									height:20px;
+									overflow:hidden;
+									
+									display:flex;
+									flex-direction:row;
+								}
+								
+									.hp {
+										position:relative;
+										width:100px;
+										height:100%;
+										padding-left:5px;
+									}
+									
+									.guns {
+										position:relative;
+										height:100%;
+										width:60%;
+										flex-grow:1;
+										padding-right:5px;
+										text-align:right;
+									}
+						
+							.arc {
+								position:relative;
+								width:100px;
+								height:100%;
+								padding-left:5px;
 								display:flex;
 								flex-direction:row;
 							}
+								
+								.green_light {
+									position:relative;
+									float:right;
+									height:10px;
+									width:10px;
+									margin-top:7px;
+									margin-left:10px;
+									background:url("green_button.png");
+									background-size:100% 100%;
+								}
+								
+								.red_light {
+									position:relative;
+									float:right;
+									height:10px;
+									width:10px;
+									margin-top:7px;
+									margin-left:10px;
+									background:url("red_button.png");
+									background-size:100% 100%;
+								}
 							
-								.escort_display_left_column {
-									height:100%; 
-									width:50px;
+							.escort_display {
+								width:100%;
+								height:200px;
+								border:2px ridge aqua;
+								color:black;
+								display:flex; 
+								flex-direction:column; 
+							}
+							
+								
+								.escort_display_symbol {
+									height:8px; 
+									width:8px; 
+									margin:2px;
+									background:url("yellow_button2.png");
+									background-size:100% 100%;
+								}
+								
+								
+								
+								.escort_display_send_to_middle {
+									height:20px;
+									width:100%;
+									background-color:orange;
+									border:2px ridge aqua; 
 									display:flex;
-									flex-direction:column;
+									flex-direction:row; 
+									font-size:10px;
+								}
+								
+									.escort_display_send_to_middle_number {
+										height:100%; 
+										width:20px; 
+										flex-grow:1;
+										background-color:grey; 
+										border:1px solid green;
+										text-align:center;
+									}
+								
+								
+								
+								.escort_display_top_row {
+									height:50px; 
+									// background-color:blue; 
+									margin-left:50px;
+									margin-right:50px;
+									display:flex;
+									flex-direction:row; 
 									flex-wrap:wrap;
 									border:2px ridge aqua;
 									border-radius:5px;
 								}
 								
-								.escort_display_middle_column {
-									height:100%; 
-									width:1px;
-									flex-grow:1;
-									background-color:black; 
+								.escort_display_middle_row {
+									height:1px; 
+									background-color:green; 
+									flex-grow:1; 
 									display:flex;
-									flex-direction:column; 
+									flex-direction:row;
 								}
 								
-									.escort_display_middle_column_top_row {
-										width:100%; 
-										height:1px; 
-										flex-grow:2; 
-										background-color:aqua; 
+									.escort_display_left_column {
+										height:100%; 
+										width:50px;
 										display:flex;
-										flex-direction:row; 
+										flex-direction:column;
 										flex-wrap:wrap;
+										border:2px ridge aqua;
+										border-radius:5px;
 									}
 									
-									
-									
-									.escort_display_middle_column_bottom_row {
-										width:100%; 
-										height:1px; 
-										flex-grow:1; 
-										background-color:orange; 
-									}
-								
-									.escort_display_distance {
-										height:20px;
-										width:100%;
-										background-color:orange;
-										border:2px ridge aqua; 
+									.escort_display_middle_column {
+										height:100%; 
+										width:1px;
+										flex-grow:1;
+										background-color:black; 
 										display:flex;
-										flex-direction:row; 
-										font-size:10px;
+										flex-direction:column; 
 									}
 									
-										.escort_display_distance_number {
-											height:100%;
-											width:40px;
-											background-color:green;
-											border:2px ridge grey; 
-											flex-grow:1; 
-											text-align:center;
+										.escort_display_middle_column_top_row {
+											width:100%; 
+											height:1px; 
+											flex-grow:2; 
+											background-color:aqua; 
+											display:flex;
+											flex-direction:row; 
+											flex-wrap:wrap;
 										}
 										
 										
+										
+										.escort_display_middle_column_bottom_row {
+											width:100%; 
+											height:1px; 
+											flex-grow:1; 
+											background-color:orange; 
+										}
+									
+										.escort_display_distance {
+											height:20px;
+											width:100%;
+											background-color:orange;
+											border:2px ridge aqua; 
+											display:flex;
+											flex-direction:row; 
+											font-size:10px;
+										}
+										
+											.escort_display_distance_number {
+												height:100%;
+												width:40px;
+												background-color:green;
+												border:2px ridge grey; 
+												flex-grow:1; 
+												text-align:center;
+											}
+											
+											
+									
+									.escort_display_right_column {
+										height:100%; 
+										width:50px;
+										display:flex;
+										flex-direction:column;
+										flex-wrap:wrap;
+										border:2px ridge aqua;
+										border-radius:5px;
+									}
 								
-								.escort_display_right_column {
-									height:100%; 
-									width:50px;
+								
+								.escort_display_bottom_row {
+									height:50px; 
+									margin-left:50px;
+									margin-right:50px;
 									display:flex;
-									flex-direction:column;
+									flex-direction:row;
 									flex-wrap:wrap;
 									border:2px ridge aqua;
 									border-radius:5px;
 								}
-							
-							
-							.escort_display_bottom_row {
-								height:50px; 
-								margin-left:50px;
-								margin-right:50px;
-								display:flex;
-								flex-direction:row;
-								flex-wrap:wrap;
-								border:2px ridge aqua;
-								border-radius:5px;
-							}
 	</style>
 		
 		
@@ -910,6 +986,7 @@
 	
 	
 	<script> 
+	
 	
 	var app = angular.module ("mainApp", [] )
 	
@@ -976,6 +1053,26 @@
 			result = result.concat (value);  
 		})
 		return result 
+	}
+	
+	///////////////////////////////////////////
+	
+	// makes the border of the element blink  ;;;  n ist the number of times the border disappeares and appeares
+	function blink_border (element, i, n) {
+		if (i < n) {
+			$(element).toggleClass("no_border");
+			$(element).animate (
+				{
+					opacity:'1', 
+				},
+				{
+					duration:300, 
+					complete: function () {
+						blink_border (element, i + 1, n );
+					}
+				}
+			);
+		}
 	}
 	
 	
@@ -1061,7 +1158,7 @@
 	/////////////
 	
 	///////////////////////////////////////
-	normalize_angle = function (a) {
+	function normalize_angle (a) {
 		if (a < -3.14) {
 			a += 6.28
 		}
@@ -1485,15 +1582,24 @@
 				fleet_type: "flottila"
 				}); 
 				
-			for (let item of fleet.escort_ships ["selected"]) {
+			
+			
+			for (let item of fleet.escort_ships ["selected"] ) {
 				new_flottila.core_ship_list.push (item); 
+				console.log (fleet.escort_ships ["selected"].length);
 			}  
-				
-			if (fleet.team = "p") {
+			
+			fleet.escort_ships ["selected"] = []; 
+			
+			
+			
+			
+			if (fleet.team == "p") {
 				$scope.player_fleet_list.push (new_flottila);
 			} 
 			
-			if (fleet.team = "e") {
+			
+			if (fleet.team == "e") {
 				$scope.enemy_fleet_list.push (new_flottila);
 			} 
 		
@@ -2094,6 +2200,21 @@
 				"secondaries_destroyed": 0, 
 				"battleships_destroyed": 0 
 			}
+			this.display = false; 
+			
+			this.test_function = function () {
+				alert ("fleet test function executed"); 
+			}
+			
+			this.switch_display = function (event) {
+				if (this.display == false) {
+					this.display = true;
+					event.target.innerHTML = " - ";
+				} else {
+					this.display = false; 
+					event.target.innerHTML = "+";
+				}
+			}
 			
 			
 			
@@ -2381,14 +2502,25 @@
 			///////////////////////////
 			this.main_fleet_graphics = function () {
 				//			__a__ 	create fleet dot and append it to middle_column 
-				var new_element = $("<div> </div>").addClass ("fleet_button").css ("top", this.position [1] + "px").css ("left", this.position [0] + "px") .addClass ("graphic").css ("background-image", "url('"+ this.graphic_symbol +"')").addClass (this.name)
+				
+				switch (this.fleet_type) {
+					case "main" : 
+						var graphics_class = "main_fleet_button";
+						break; 
+					case "flottila" : 
+						var graphics_class = "flottila_button";
+						break;
+				}
+				
+				
+				var new_element = $("<div> </div>").addClass (graphics_class).css ("top", this.position [1] + "px").css ("left", this.position [0] + "px") .addClass ("graphic").css ("background-image", "url('"+ this.graphic_symbol +"')").addClass (this.name)
 				
 				
 				$("#middle_column").append ( new_element) 
 				
 				//			__b__ 	mark the activ fleet 
 				if (this == $scope.active_player_fleet) {
-					var new_cover = $("<div> </div>").addClass ("fleet_button").css ("top", this.position [1] + "px").css ("left", this.position [0] + "px") .addClass ("graphic").css ("background-image", "url('trans_white_button.png')").addClass (this.name).addClass ("player_active_fleet_marker")
+					var new_cover = $("<div> </div>").addClass ("main_fleet_button").css ("top", this.position [1] + "px").css ("left", this.position [0] + "px") .addClass ("graphic").css ("background-image", "url('trans_white_button.png')").addClass (this.name).addClass ("player_active_fleet_marker")
 					
 					$("#middle_column").append ( new_cover) 
 				}
@@ -3018,11 +3150,35 @@
 					if ( point_distance (clickpoint, item.position) <= 10) {
 						$scope.active_player_fleet = item 
 						$scope.$apply ();
-						// $("." + item.name).remove ()
 						$(".player_active_fleet_marker").remove ()
 						item.do_graphics ()
+				
+				
+						/////    change color of the fleet display  and makes newly selected fleet blink in the display
+						
+						for (item of $("#player_ship_list").children()) {
+							console.log ($(item).attr("name"));
+							if ($(item).attr("name") == $scope.active_player_fleet.name) {
+								$(item).css ("border-color", "aqua");
+								
+								
+								blink_border (item, 0, 6);
+								
+							} else {
+								$(item).css ("border-color", "white");
+							}
+						}
+						
+						
+				
 					}
 				}
+				
+				
+				////// ///////////  ///////// 
+				
+				
+				
 				for (let item of $scope.enemy_fleet_list) {
 					if ( point_distance (clickpoint, item.position) <= 10) {
 						$scope.active_enemy_fleet = item 
@@ -3134,7 +3290,7 @@
 	</script>
 
 </head>
-<body ng-app="mainApp" ng-controller="mainController" assign-commands> 
+<body ng-app="mainApp" ng-controller="mainController"> 
 	<div id="windows_frame"> 
 		<div id="inner_windows_frame"> 
 			<div id="main_menu_bar" class="header_bar"> 
@@ -3345,69 +3501,72 @@
 						</div>
 						<div class="black_line_h"> </div>
 						<div id="player_ship_list"> 
-							<div class = "ship_display" ng-repeat="fleet in player_fleet_list">
-								<div class="name_type">
-									<div class="name"> {{fleet.name}}</div>
+							<div class="ship_display_outer" ng-repeat="fleet in player_fleet_list" name={{fleet.name}}  >
+								<div  class="hp" style="width:100%;height:20px;font-size:15px;display:flex;flex-direction:row;">
+									{{fleet.name}} &nbsp team : {{fleet.team}}
+									<div style="flex-grow:1;"> </div>     <!--  spacer  --> 
+									<div class="close_button" ng-click="fleet.switch_display ($event)">+</div>
+
 								</div>
-								<div class="hp" style="width:100%;height:20px;"> {{fleet.target_fleet.name}} </div>
-								<div class="hp" style="width:100%;height:20px;"> target angle: {{  fleet.target_angle_degree}} </div>
-								<div class="hp" style="width:100%;height:20px;"> hit angle: {{  fleet.target_hit_angle}} </div>
-								<div class="hp" style="width:100%;height:20px;"> Distance:  {{fleet.target_distance}} </div>
-								
-								<div class="arc" style="width:100%;height:20px;"> coax arc:
-									<div class="green_light"  ng-if="fleet.turrets_in_arc.cx" > </div>
-									<div class="red_light"  ng-if="!fleet.turrets_in_arc.cx" > </div>
-								</div>
-								<div class="arc" style="width:100%;height:20px;"> fore arc:
-									<div class="green_light"  ng-if="fleet.turrets_in_arc.f" > </div>
-									<div class="red_light"  ng-if="!fleet.turrets_in_arc.f" > </div>
-								</div>
-								<div class="arc" style="width:100%;height:20px;"> aft arc: 
-									<div class="green_light"  ng-if="fleet.turrets_in_arc.a" > </div>
-									<div class="red_light"  ng-if="!fleet.turrets_in_arc.a" > </div>
-								</div>
-								<div class="hp" style="width:100%;height:20px;"> br right arc: {{fleet.turrets_in_arc.br}} </div>
-								<div class="hp" style="width:100%;height:20px;"> br left arc: {{fleet.turrets_in_arc.bl}} </div>
-							<div class="escort_display"> 
-								<div class="escort_display_distance">
-									<div class="escort_display_distance_number"> {{fleet.escort_radius}} </div>
-									<div class="escort_display_distance_number" ng-click="enlarge_escort_radius (fleet)"> + </div>
-									<div class="escort_display_distance_number" ng-click="decrease_escort_radius (fleet)"> - </div>
-								</div>
-								
-								<div class="escort_display_send_to_middle"> 
-									<div class="escort_display_send_to_middle_number" ng-click="escort_display_send_to_middle (fleet, 0.25)"> 25 </div>
-									<div class="escort_display_send_to_middle_number" ng-click="escort_display_send_to_middle (fleet, 0.50)"> 50 </div>
-									<div class="escort_display_send_to_middle_number" ng-click="escort_display_send_to_middle (fleet, 0.75)"> 75 </div>
-									<div class="escort_display_send_to_middle_number" ng-click="escort_display_send_to_middle (fleet, 1)"> All </div>
-								</div>
-								
-								<div class="escort_display_top_row">
-									<div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.f" > </div>
-								</div>
-								<div class="escort_display_middle_row"> 
-									<div class="escort_display_left_column"> 
-										<div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.l" > </div>
+								<div class="ship_display_inner" ng-if="fleet.display"> 
+									<div class="hp" style="width:100%;height:20px;"> {{fleet.target_fleet.name}}  &nbsp team: {{fleet.target_fleet.team}}</div>
+									<div class="hp" style="width:100%;height:20px;"> target angle: {{  fleet.target_angle_degree}} </div>
+									<div class="hp" style="width:100%;height:20px;"> hit angle: {{  fleet.target_hit_angle}} </div>
+									<div class="hp" style="width:100%;height:20px;"> Distance:  {{fleet.target_distance}} </div>
+									
+									<div class="arc" style="width:100%;height:20px;"> coax arc:
+										<div class="green_light"  ng-if="fleet.turrets_in_arc.cx" > </div>
+										<div class="red_light"  ng-if="!fleet.turrets_in_arc.cx" > </div>
 									</div>
-									<div class="escort_display_middle_column"> 
-										<div class="escort_display_middle_column_top_row">
-											<div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.selected" > </div>
+									<div class="arc" style="width:100%;height:20px;"> fore arc:
+										<div class="green_light"  ng-if="fleet.turrets_in_arc.f" > </div>
+										<div class="red_light"  ng-if="!fleet.turrets_in_arc.f" > </div>
+									</div>
+									<div class="arc" style="width:100%;height:20px;"> aft arc: 
+										<div class="green_light"  ng-if="fleet.turrets_in_arc.a" > </div>
+										<div class="red_light"  ng-if="!fleet.turrets_in_arc.a" > </div>
+									</div>
+									<div class="hp" style="width:100%;height:20px;"> br right arc: {{fleet.turrets_in_arc.br}} </div>
+									<div class="hp" style="width:100%;height:20px;"> br left arc: {{fleet.turrets_in_arc.bl}} </div>
+									
+									<div class="escort_display"> 
+										<div class="escort_display_distance">
+											<div class="escort_display_distance_number"> {{fleet.escort_radius}} </div>
+											<div class="escort_display_distance_number" ng-click="enlarge_escort_radius (fleet)"> + </div>
+											<div class="escort_display_distance_number" ng-click="decrease_escort_radius (fleet)"> - </div>
 										</div>
-										<div class="escort_display_middle_column_bottom_row">
-											<div class="escort_display_create_flottila_button" ng-click="create_flottila (fleet)"> Create Flottila</div>
+										
+										<div class="escort_display_send_to_middle"> 
+											<div class="escort_display_send_to_middle_number" ng-click="escort_display_send_to_middle (fleet, 0.25)"> 25 </div>
+											<div class="escort_display_send_to_middle_number" ng-click="escort_display_send_to_middle (fleet, 0.50)"> 50 </div>
+											<div class="escort_display_send_to_middle_number" ng-click="escort_display_send_to_middle (fleet, 0.75)"> 75 </div>
+											<div class="escort_display_send_to_middle_number" ng-click="escort_display_send_to_middle (fleet, 1)"> All </div>
+										</div>
+										
+										<div class="escort_display_top_row">
+											<div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.f" > </div>
+										</div>
+										<div class="escort_display_middle_row"> 
+											<div class="escort_display_left_column"> 
+												<div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.l" > </div>
+											</div>
+											<div class="escort_display_middle_column"> 
+												<div class="escort_display_middle_column_top_row">
+													<div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.selected" > </div>
+												</div>
+												<div class="escort_display_middle_column_bottom_row">
+													<div class="escort_display_create_flottila_button" ng-click="create_flottila (fleet)"> Create Flottila</div>
+												</div>
+											</div>
+												<div class="escort_display_right_column"><div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.r" > </div>
+											</div>
+										</div>
+										<div class="escort_display_bottom_row">
+											<div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.a" > </div>
 										</div>
 									</div>
-										<div class="escort_display_right_column"><div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.r" > </div>
-									</div>
 								</div>
-								<div class="escort_display_bottom_row">
-									<div class="escort_display_symbol" ng-repeat="escort in fleet.escort_ships.a" > </div>
-								</div>
-								
-							</div>
-							
-							
-							</div>
+							</div> <!-- ship_display_outer  -->
 						</div>
 
 					</div>
@@ -3430,7 +3589,7 @@
 						<div  ng-repeat="shot in turn_shot_list.slice (0,20) track by $index"  style="border:1px ridge blue;display:flex;flex-direction:column;font-size=10px;" > 
 							<div class="column_row" style="font-size:10px"> 
 								{{shot.target_name + "  hit by  " +   shot.mothership + "  cal  " +shot.caliber}} 
-								<div style="margin-left:7px;background-color:white;color:red;border-radius:8px;border:1px solid white;" ng-click="switch_shot_display (shot)"> {{(shot.display ? "-" : "+")}} </div>
+								<div style="margin-left:7px;background-color:white;color:red;border-radius:8px;border:1px solid white;margin:auto;" ng-click="switch_shot_display (shot)"> {{(shot.display ? "-" : "+")}} </div>
 							</div>  
 							<div class="column_row" ng-repeat="e in shot.events track by $index" ng-style={{e[1]}} >  {{e [0]}}   </div> 
 							<div ng-if="shot.display">  
